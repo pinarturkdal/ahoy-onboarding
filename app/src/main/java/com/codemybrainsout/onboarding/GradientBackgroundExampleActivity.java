@@ -20,7 +20,20 @@ public class GradientBackgroundExampleActivity extends AhoyOnboarderActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        SharedPreferences preferences =  getSharedPreferences("my_preferences",
+                MODE_PRIVATE);
+        if(preferences.getBoolean("onboarding_complete",false)) {
+            // Start Main Activity
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
 
+            // Close Onboarding
+            finish();
+            return;
+
+        }
+       
         AhoyOnboarderCard ahoyOnboarderCard1 = new AhoyOnboarderCard("City Guide", "Detailed guides to help you plan your trip.", R.drawable.backpack);
         AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Travel Blog", "Share your travel experiences with a vast network of fellow travellers.", R.drawable.chalk);
         AhoyOnboarderCard ahoyOnboarderCard3 = new AhoyOnboarderCard("Chat", "Connect with like minded people and exchange your travel stories.", R.drawable.chat);
@@ -60,6 +73,23 @@ public class GradientBackgroundExampleActivity extends AhoyOnboarderActivity {
 
     @Override
     public void onFinishButtonPressed() {
-        Toast.makeText(this, "Finish Pressed", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, "Finish Pressed", Toast.LENGTH_SHORT).show();
+        
+        SharedPreferences preferences =
+                getSharedPreferences("my_preferences", MODE_PRIVATE);
+
+        // Set onboarding_complete to true
+        preferences.edit()
+                .putBoolean("onboarding_complete",true).apply();
+
+        // Launch the main Activity, called MainActivity
+        Intent main = new Intent(this, MainActivity.class);
+        startActivity(main);
+
+        // Close the OnboardingActivity
+        finish();
+        
+        
+        
     }
 }
